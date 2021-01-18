@@ -1,0 +1,10 @@
+<!--<?= x ?> -->       //変数
+
+<?        //式
+        var myData = SpreadsheetApp.getActiveSheet().getDataRange().getValues();
+        for(var i=0;i<myData.length;i++){
+          output.append('<li>' + myData[i][0] + '</li>');
+        }
+?>
+
+

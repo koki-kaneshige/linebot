@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<html>
+  <head>
+    <base target="_top">
+    <?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
+  </head>
+  <body>
+    <div id="head">
+    <?
+      var date = new Date();
+      // 今日の日付を表示
+      output.append('<div id="time"><a>' + Utilities.formatDate( date, 'Asia/Tokyo', 'MM/dd hh:mm') + '時点</a></div>');
+    ?>
+    </div>
+      <?
+        var sheet = spreadsheet.getSheetByName("main");
+        var keyData = getData(sheet)[2][0];
+        var key= keyData.split("=")[2];
+        key = key.split("}")[0];
+        
+        var keysheet = spreadsheet.getSheetByName("key");
+        var shiftData = getData(keysheet);
+        for(var j=0;j<shiftData.length;j++){
+          if(shiftData[j][0] == key){
+            var name = get_name(shiftData[j][1]);
+            var date = shiftData[j][2];
+          }
+        }
+        output.append('<div id="databox"><div id="data">');
+          output.append('<h2>交代して欲しい人: ' + name + '</h2>');
+          output.append('<h2>交代して欲しいシフト: ' + date + '</h2>');
+        output.append('</div></div>');
+        
+        output.append('<ul>');                
+        var userSheet = spreadsheet.getSheetByName(key + "_user");
+        var usData = getData(userSheet);
+        for(var i=0;i<usData.length;i++){
+          if(usData[i][2] == "ok"){
+            output.append('<li class="ok">' + usData[i][1] + ': ' + usData[i][2] + '</li>');
+          }else{
+            output.append('<li class="no">' + usData[i][1] + ': ' + usData[i][2] + '</li>');
+          }
+        }
+        output.append('</ul>');
+      ?>
+  </body>
+</html>
+
