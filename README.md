@@ -1,1 +1,1 @@
-# linebot
+# linebot用のGASソースコード
